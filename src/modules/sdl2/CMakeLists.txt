@@ -5,7 +5,7 @@ add_library(mltsdl2 MODULE
   factory.c
 )
 
-target_link_libraries(mltsdl2 mlt m Threads::Threads sdl2)
+target_link_libraries(mltsdl2 PRIVATE mlt m Threads::Threads SDL2::SDL2)
 
 # Create module in parent directory, for the benefit of "source setenv".
 set_target_properties(mltsdl2 PROPERTIES LIBRARY_OUTPUT_DIRECTORY ..)

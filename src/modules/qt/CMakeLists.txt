@@ -18,7 +18,7 @@ add_library(mltqt MODULE
   typewriter.cpp
 )
 
-target_link_libraries(mltqt
+target_link_libraries(mltqt PRIVATE
   mlt++
   mlt
   m
@@ -38,15 +38,16 @@ if(GPL3)
   install(FILES transition_vqm.yml DESTINATION ${CMAKE_INSTALL_DATADIR}/mlt/qt)
 endif()
 
-if(TARGET PkgConfig::FFTW)
+if(FFTW_FOUND)
   target_sources(mltqt PRIVATE filter_audiospectrum.cpp filter_lightshow.cpp)
-  target_link_libraries(mltqt PkgConfig::FFTW)
+  target_link_libraries(mltqt PRIVATE ${FFTW_LIBRARIES})
+  target_include_directories(mltqt PRIVATE ${FFTW_INCLUDE_DIRS})
   target_compile_definitions(mltqt PRIVATE USE_FFTW)
   install(FILES filter_audiospectrum.yml filter_lightshow.yml DESTINATION ${CMAKE_INSTALL_DATADIR}/mlt/qt)
 endif()
 
-if(TARGET PkgConfig::libexif)
-  target_link_libraries(mltqt PkgConfig::libexif)
+if(TARGET Exif::Exif)
+  target_link_libraries(mltqt PRIVATE Exif::Exif)
   target_compile_definitions(mltqt PRIVATE USE_EXIF)
 endif()
 

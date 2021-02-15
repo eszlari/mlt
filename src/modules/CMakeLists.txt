@@ -12,7 +12,7 @@ if(MOD_FEEDS)
   add_subdirectory(feeds)
 endif()
 
-if(MOD_FREI0R AND FREI0R_FOUND)
+if(MOD_FREI0R AND TARGET Frei0r::Frei0r)
   add_subdirectory(frei0r)
 endif()
 
@@ -88,7 +88,7 @@ if(MOD_SDL1 AND TARGET PkgConfig::sdl)
   add_subdirectory(sdl)
 endif()
 
-if(MOD_SDL2 AND TARGET sdl2)
+if(MOD_SDL2 AND TARGET SDL2::SDL2)
   add_subdirectory(sdl2)
 endif()
 

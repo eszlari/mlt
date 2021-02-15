@@ -29,7 +29,7 @@ add_library(mlt SHARED
   mlt_version.c
 )
 
-target_link_libraries(mlt m Threads::Threads ${CMAKE_DL_LIBS})
+target_link_libraries(mlt PRIVATE m Threads::Threads ${CMAKE_DL_LIBS})
 
 target_include_directories(mlt PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
@@ -41,7 +41,7 @@ set_target_properties(mlt PROPERTIES SOVERSION ${MLT_VERSION_MAJOR} VERSION ${ML
 if(WIN32)
   set_target_properties(mlt PROPERTIES OUTPUT_NAME "mlt-${MLT_VERSION_MAJOR}")
   target_sources(mlt PRIVATE ../win32/win32.c ../win32/strptime.c)
-  target_link_libraries(mlt Iconv::Iconv)
+  target_link_libraries(mlt PRIVATE Iconv::Iconv)
   if(NODEPLOY)
     target_compile_definitions(mlt PRIVATE NODEPLOY)
   endif()
@@ -49,8 +49,9 @@ endif()
 
 if(NOT (WIN32 OR APPLE))
   target_compile_definitions(mlt PRIVATE
-    PREFIX_DATA="${CMAKE_INSTALL_FULL_DATADIR}/mlt"
-    PREFIX_LIB="${CMAKE_INSTALL_FULL_LIBDIR}/mlt")
+    $<BUILD_INTERFACE:PREFIX_DATA="${CMAKE_BINARY_DIR}" PREFIX_LIB="${CMAKE_BINARY_DIR}/src/modules">
+    $<INSTALL_INTERFACE:PREFIX_DATA="${CMAKE_INSTALL_FULL_DATADIR}/mlt" PREFIX_LIB="${CMAKE_INSTALL_FULL_LIBDIR}/mlt">
+  )
 endif()
 
 set(MLT_PUPLIC_HEADERS
